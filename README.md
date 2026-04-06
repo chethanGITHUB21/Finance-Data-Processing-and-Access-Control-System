@@ -103,7 +103,7 @@ Pagination is handled on the frontend for tables:
 1. Users table paginates results in the UI.
 2. Records table paginates results in the UI.
 
-**Soft Delete**
+**Soft Delete:**
 Records are soft-deleted (flagged with `is_deleted` and timestamped in `deleted_at`).
 
 **Charts & Why They Exist**
