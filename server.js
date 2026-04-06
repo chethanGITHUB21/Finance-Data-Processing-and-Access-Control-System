@@ -1,11 +1,13 @@
 const express = require("express");
 const RateLimiter = require("express-rate-limit");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
 const authRoutes = require("./Routes/authRoutes");
 const userRoutes = require("./Routes/userRoutes");
 const recordsRoutes = require("./Routes/recordsRoutes");
 const summaryRoutes = require("./Routes/summaryRoutes");
 const lookupRoutes = require("./Routes/lookupRoutes");
+const swaggerDocument = require("./swagger.json");
 
 const app = express();
 
@@ -18,6 +20,8 @@ const limiterDefault = RateLimiter({ windowMs: 15 * 60 * 1000, max: 200 });
 app.get("/", (req, res) => {
   res.status(200).json({ message: "FinancialTrackProject API is running" });
 });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);

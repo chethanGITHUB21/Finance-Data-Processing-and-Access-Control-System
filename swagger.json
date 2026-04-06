@@ -1,0 +1,304 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Financial Track Project API",
+    "version": "1.0.0",
+    "description": "Role-based financial tracking API for users, records, summaries, and lookups."
+  },
+  "servers": [
+    { "url": "http://localhost:3001" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "API health check",
+        "responses": {
+          "200": { "description": "API is running" }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "role": { "type": "string", "enum": ["VIEWER", "ANALYST", "ADMIN"] }
+                },
+                "required": ["username", "email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User registered" },
+          "400": { "description": "Validation error" },
+          "409": { "description": "User already exists" }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login success" },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+    "/api/users/": {
+      "get": {
+        "summary": "Get all users",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Users retrieved" }
+        }
+      },
+      "post": {
+        "summary": "Create user",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "role": { "type": "string", "enum": ["VIEWER", "ANALYST", "ADMIN"] },
+                  "status": { "type": "string", "enum": ["ACTIVE", "INACTIVE"] }
+                },
+                "required": ["username", "email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User created" }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "summary": "Get user by id",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "User retrieved" },
+          "404": { "description": "User not found" }
+        }
+      },
+      "put": {
+        "summary": "Update user",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "role": { "type": "string", "enum": ["VIEWER", "ANALYST", "ADMIN"] },
+                  "status": { "type": "string", "enum": ["ACTIVE", "INACTIVE"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "User updated" },
+          "404": { "description": "User not found" }
+        }
+      },
+      "delete": {
+        "summary": "Delete user",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "User deleted" },
+          "404": { "description": "User not found" }
+        }
+      }
+    },
+    "/api/records": {
+      "post": {
+        "summary": "Create record",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": { "type": "integer" },
+                  "amount": { "type": "number" },
+                  "type_id": { "type": "integer" },
+                  "category_id": { "type": "integer" },
+                  "record_date": { "type": "string", "format": "date" },
+                  "description": { "type": "string" }
+                },
+                "required": ["user_id", "amount", "type_id", "category_id", "record_date"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Record created" }
+        }
+      }
+    },
+    "/api/records/get": {
+      "get": {
+        "summary": "Get all records",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Records retrieved" }
+        }
+      }
+    },
+    "/api/records/get/{id}": {
+      "get": {
+        "summary": "Get record by id",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Record retrieved" },
+          "404": { "description": "Record not found" }
+        }
+      }
+    },
+    "/api/records/update/{id}": {
+      "put": {
+        "summary": "Update record",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": { "type": "number" },
+                  "type_id": { "type": "integer" },
+                  "category_id": { "type": "integer" },
+                  "record_date": { "type": "string", "format": "date" },
+                  "description": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Record updated" }
+        }
+      }
+    },
+    "/api/records/delete/{id}": {
+      "delete": {
+        "summary": "Soft-delete record",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Record deleted" }
+        }
+      }
+    },
+    "/api/summary/overview": {
+      "get": {
+        "summary": "Overview summary",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Overview summary" }
+        }
+      }
+    },
+    "/api/summary/Category": {
+      "get": {
+        "summary": "Category summary",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Category summary" }
+        }
+      }
+    },
+    "/api/summary/trends": {
+      "get": {
+        "summary": "Trend summary",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Trend summary" }
+        }
+      }
+    },
+    "/api/lookup/types": {
+      "get": {
+        "summary": "List types",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Types list" }
+        }
+      }
+    },
+    "/api/lookup/categories": {
+      "get": {
+        "summary": "List categories",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Categories list" }
+        }
+      }
+    }
+  }
+}
+

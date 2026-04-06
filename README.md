@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Finance-Data-Processing-and-Access-Control-System
-=======
 # Financial Track Project
 
 A role-based financial tracking dashboard with authentication, user management, records tracking, and analytics summaries for income/expense trends.
@@ -111,4 +108,3 @@ Records are soft-deleted (flagged with `is_deleted` and timestamped in `deleted_
 1. Overview (bar chart): quick snapshot of total income, total expense, and net balance.
 2. Category (horizontal bar): compares totals by category to reveal spending/earning distribution.
 3. Trends (line chart): shows how income and expense change across months to spot growth or spikes.
->>>>>>> e9bd5c5 (initial commit)
