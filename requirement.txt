@@ -1,0 +1,3 @@
+npm install
+npm install bcrypt cors dotenv express express-rate-limit express-validate express-validator jsonwebtoken pg
+npm run start

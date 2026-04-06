@@ -1,0 +1,329 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In — NexusPanel</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .tab-btns {
+        display: flex;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 24px;
+      }
+      .tab-btn {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 10px;
+        cursor: pointer;
+        transition: var(--transition);
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+      }
+      .tab-btn.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+      .password-field {
+        position: relative;
+      }
+      .password-field .form-input {
+        padding-right: 42px;
+      }
+      .password-toggle {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        width: 30px;
+        height: 30px;
+        border: 1px solid var(--border);
+        background: transparent;
+        border-radius: 6px;
+        color: var(--text-secondary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+      }
+      .password-toggle:hover {
+        border-color: var(--border-bright);
+        color: var(--text-primary);
+      }
+      .password-toggle svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div style="width: 100%; max-width: 400px">
+        <div class="login-card">
+          <div class="login-logo">⬡ NexusPanel</div>
+          <div class="login-tagline">ROLE-BASED ACCESS MANAGEMENT SYSTEM</div>
+
+          <!-- TABS -->
+          <div class="tab-btns">
+            <button class="tab-btn active" data-tab="login">Login</button>
+            <button class="tab-btn" data-tab="register">Sign-In</button>
+          </div>
+
+          <!-- LOGIN TAB -->
+          <div class="tab-panel active" id="tab-login">
+            <form id="login-form" autocomplete="off" novalidate>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="text" class="form-input" id="login-email"
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password</label>
+                <div class="password-field">
+                  <input type="password" class="form-input" id="login-password"
+                    placeholder="............."
+                  />
+                  <button
+                    type="button"
+                    class="password-toggle"
+                    data-target="login-password"
+                    aria-label="Show password"
+                    title="Show password"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M12 5c-5 0-9.27 3.11-11 7 1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 .001 6.001A3 3 0 0 0 12 9z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div
+                id="login-error"
+                style="
+                  display: none;
+                  margin-bottom: 16px;
+                  font-size: 12px;
+                  color: var(--accent-red);
+                  padding: 10px 14px;
+                  background: rgba(255, 59, 92, 0.06);
+                  border: 1px solid rgba(255, 59, 92, 0.2);
+                  border-radius: var(--radius);
+                "
+              ></div>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                style="width: 100%; justify-content: center"
+                id="login-btn"
+              >
+                Login
+              </button>
+            </form>
+          </div>
+
+          <!-- REGISTER TAB -->
+          <div class="tab-panel" id="tab-register">
+            <form id="register-form" autocomplete="off" novalidate>
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="reg-name"
+                  placeholder="Your full name"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="text" class="form-input" id="reg-email"
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password</label>
+                <div class="password-field">
+                  <input type="password" class="form-input" id="reg-password"
+                    placeholder="Min. 8 characters"
+                  />
+                  <button
+                    type="button"
+                    class="password-toggle"
+                    data-target="reg-password"
+                    aria-label="Show password"
+                    title="Show password"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M12 5c-5 0-9.27 3.11-11 7 1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 .001 6.001A3 3 0 0 0 12 9z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <input type="hidden" id="reg-role" value="VIEWER" />
+              <div
+                id="register-error"
+                style="
+                  display: none;
+                  margin-bottom: 16px;
+                  font-size: 12px;
+                  color: var(--accent-red);
+                  padding: 10px 14px;
+                  background: rgba(255, 59, 92, 0.06);
+                  border: 1px solid rgba(255, 59, 92, 0.2);
+                  border-radius: var(--radius);
+                "
+              ></div>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                style="width: 100%; justify-content: center"
+                id="register-btn"
+              >
+                Sign-In
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <p
+          style="
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 20px;
+          "
+        >
+          NexusPanel · Role-Based Access System
+        </p>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+      // ── LOGIN PAGE LOGIC ──
+
+      // Redirect if already logged in
+      if (Auth.isLoggedIn()) window.location.href = "index.html";
+
+      // Tab switching
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".tab-btn")
+            .forEach((b) => b.classList.remove("active"));
+          document
+            .querySelectorAll(".tab-panel")
+            .forEach((p) => p.classList.remove("active"));
+          btn.classList.add("active");
+          document
+            .getElementById("tab-" + btn.dataset.tab)
+            ?.classList.add("active");
+        });
+      });
+
+      // ── LOGIN FORM ──
+      document
+        .getElementById("login-form")
+        ?.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = document.getElementById("login-btn");
+          const errEl = document.getElementById("login-error");
+          errEl.style.display = "none";
+          btn.disabled = true;
+          btn.innerHTML = '<span class="loading-spinner"></span> Logging in…';
+
+          try {
+            const res = await Api.login({
+              email: document.getElementById("login-email").value,
+              password: document.getElementById("login-password").value,
+            });
+
+            const payload = res.data || res;
+            const token = payload.token || payload.access_token || payload.jwt;
+            if (!token) {
+              throw new Error("Token not returned from server.");
+            }
+            const role = payload.role || payload.user?.role || "VIEWER";
+            const user = payload.user || {
+              username: payload.username,
+              email: payload.email,
+            };
+
+            Auth.save(token, role, user);
+            window.location.href = "index.html";
+          } catch (err) {
+            errEl.textContent =
+              err.message || "Invalid credentials. Please try again.";
+            errEl.style.display = "block";
+            btn.disabled = false;
+            btn.textContent = "Login";
+          }
+        });
+
+      // ── REGISTER FORM ──
+      document
+        .getElementById("register-form")
+        ?.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = document.getElementById("register-btn");
+          const errEl = document.getElementById("register-error");
+          errEl.style.display = "none";
+          btn.disabled = true;
+          btn.innerHTML = '<span class="loading-spinner"></span> Signing in…';
+
+          try {
+            const res = await Api.register({
+              username: document.getElementById("reg-name").value,
+              email: document.getElementById("reg-email").value,
+              password: document.getElementById("reg-password").value,
+              role: document.getElementById("reg-role").value,
+            });
+
+            const payload = res.data || res;
+            // After registration, redirect to login (do not auto-login)
+            window.location.href = "login.html";
+          } catch (err) {
+            errEl.textContent =
+              err.message || "Registration failed. Please try again.";
+            errEl.style.display = "block";
+            btn.disabled = false;
+            btn.textContent = "Sign-In";
+          }
+        });
+
+      // Password show/hide toggle
+      document.querySelectorAll(".password-toggle").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const targetId = btn.getAttribute("data-target");
+          const input = document.getElementById(targetId);
+          if (!input) return;
+          const show = input.type === "password";
+          input.type = show ? "text" : "password";
+          btn.setAttribute(
+            "aria-label",
+            show ? "Hide password" : "Show password",
+          );
+          btn.setAttribute("title", show ? "Hide password" : "Show password");
+        });
+      });
+    </script>
+  </body>
+</html>

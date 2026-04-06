@@ -1,0 +1,349 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Records — NexusPanel</title>
+    <!--
+    ── STYLING INSTRUCTION ──
+    This page uses the shared styles.css file already in your frontend folder.
+    Make sure records.html sits in the SAME directory as styles.css, app.js,
+    index.html and users.html.
+
+    File structure should look like:
+    your-frontend/
+    ├── styles.css       ← shared styles (DO NOT change)
+    ├── app.js           ← shared logic  (DO NOT change)
+    ├── index.html
+    ├── users.html
+    ├── records.html     ← this file
+    └── records.js       ← new JS file for this page
+  -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ── NAVBAR ── (identical structure to all other pages) -->
+    <nav class="navbar">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-dot"></span>
+        NexusPanel
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Dashboard</a>
+        <a href="users.html" class="nav-link">Users</a>
+        <a href="records.html" class="nav-link">Records</a>
+      </div>
+      <div class="nav-right">
+        <span class="nav-user" id="nav-user">—</span>
+        <span class="role-badge" id="role-badge">—</span>
+        <button class="btn-logout" id="logout-btn">Sign Out</button>
+      </div>
+    </nav>
+
+    <main>
+      <div class="page-container">
+        <!-- ── PAGE HEADER ── -->
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Financial <span>Records</span></h1>
+            <p class="page-subtitle" id="records-total-count">
+              Loading records…
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center">
+            <!-- Only visible to ADMIN — hidden via JS for other roles -->
+            <button class="btn btn-primary" id="create-record-btn">
+              + Add Record
+            </button>
+          </div>
+        </div>
+
+        <!-- ── SUMMARY STRIP ── (quick numbers above the table) -->
+        <div class="stat-grid" style="margin-bottom: 24px">
+          <div class="stat-card">
+            <div class="stat-label">Total Income</div>
+            <div class="stat-value stat-positive" id="strip-income">—</div>
+            <div class="stat-icon">💹</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Expense</div>
+            <div class="stat-value stat-negative" id="strip-expense">—</div>
+            <div class="stat-icon">📉</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Net Balance</div>
+            <div class="stat-value" id="strip-net">—</div>
+            <div class="stat-icon">⚖️</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Records</div>
+            <div class="stat-value" id="strip-count">—</div>
+            <div class="stat-icon">🗂</div>
+          </div>
+        </div>
+
+        <!-- DATA LOAD ERROR -->
+        <div
+          id="records-error"
+          class="hidden"
+          style="
+            margin: 10px 0 18px;
+            padding: 10px 14px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 59, 92, 0.25);
+            background: rgba(255, 59, 92, 0.08);
+            color: var(--accent-red);
+            font-size: 12px;
+          "
+        ></div>
+
+        <!-- ── FILTER BAR ── -->
+        <div class="filters-bar">
+          <!-- Search -->
+          <div class="search-input-wrap">
+            <span class="search-icon">⌕</span>
+            <input
+              type="text"
+              class="search-input"
+              id="record-search"
+              placeholder="Search by description…"
+            />
+          </div>
+
+          <!-- Type filter -->
+          <select
+            class="form-select"
+            id="filter-type"
+            style="width: auto; padding: 9px 14px"
+          >
+            <option value="">All Types</option>
+          </select>
+
+          <!-- Category filter -->
+          <select
+            class="form-select"
+            id="filter-category"
+            style="width: auto; padding: 9px 14px"
+          >
+            <option value="">All Categories</option>
+            <!-- Populated dynamically by records.js from CATEGORIES map -->
+          </select>
+
+          <!-- Date range -->
+          <input
+            type="date"
+            class="form-input"
+            id="filter-start-date"
+            style="width: auto"
+            title="Start date"
+          />
+
+          <!-- Reset -->
+          <button class="btn btn-secondary btn-sm" id="reset-filters-btn">
+            Reset
+          </button>
+        </div>
+
+        <!-- ── RECORDS TABLE ── -->
+        <div class="card" style="padding: 0">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Category</th>
+                  <th>Amount</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="records-table-body">
+                <!-- Skeleton rows shown on load -->
+                <tr>
+                  <td colspan="7">
+                    <div class="empty-state">
+                      <div class="empty-desc">Loading records…</div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- PAGINATION -->
+          <div class="pagination" style="padding: 12px 20px">
+            <span class="pagination-info" id="records-pagination-info">—</span>
+            <div
+              class="pagination-controls"
+              id="records-pagination-controls"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ══════════════════════════════════════════════
+     CREATE / EDIT RECORD MODAL
+     Opened by "+ Add Record" button (create)
+     or the ✎ edit icon in each row (edit)
+════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="record-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title" id="record-modal-title">Add Record</h3>
+          <button class="modal-close" aria-label="Close">✕</button>
+        </div>
+
+        <form id="record-form" novalidate autocomplete="off">
+          <!-- Amount -->
+          <div class="form-group">
+            <label class="form-label" for="input-amount">Amount</label>
+            <input
+              type="number"
+              class="form-input"
+              id="input-amount"
+              placeholder="e.g. 5000"
+              min="0.01"
+              step="0.01"
+             
+            />
+          </div>
+
+          <!-- Type + Category side by side -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px">
+            <div class="form-group">
+              <label class="form-label" for="input-type">Type</label>
+              <select class="form-select" id="input-type">
+                <option value="">Select type</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-category">Category</label>
+              <select class="form-select" id="input-category">
+                <option value="">Select category</option>
+                <!-- Populated by records.js -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Date -->
+          <div class="form-group">
+            <label class="form-label" for="input-date">Record Date</label>
+            <input type="date" class="form-input" id="input-date" />
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label class="form-label" for="input-description">
+              Description
+              <span style="color: var(--text-muted); font-weight: 400"
+                >(optional)</span
+              >
+            </label>
+            <input
+              type="text"
+              class="form-input"
+              id="input-description"
+              placeholder="e.g. October payroll, Client payment…"
+              maxlength="255"
+            />
+          </div>
+
+          <!-- Form error message area -->
+          <div
+            id="record-form-error"
+            style="
+              display: none;
+              font-size: 12px;
+              color: var(--accent-red);
+              padding: 10px 14px;
+              background: rgba(255, 59, 92, 0.06);
+              border: 1px solid rgba(255, 59, 92, 0.2);
+              border-radius: var(--radius);
+              margin-bottom: 4px;
+            "
+          ></div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary modal-close">
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              id="record-submit-btn"
+            >
+              Save Record
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+     DELETE CONFIRMATION MODAL
+════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="delete-record-modal">
+      <div class="modal" style="max-width: 380px">
+        <div class="modal-header">
+          <h3 class="modal-title" style="color: var(--accent-red)">
+            ⚠ Delete Record
+          </h3>
+          <button class="modal-close" aria-label="Close">✕</button>
+        </div>
+
+        <p
+          style="
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+          "
+        >
+          Are you sure you want to delete this record?
+        </p>
+        <!-- Record snapshot shown before confirming -->
+        <div
+          id="delete-record-preview"
+          style="
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+          "
+        ></div>
+        <p style="font-size: 11px; color: var(--text-muted)">
+          This action cannot be undone.
+        </p>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary modal-close">
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            id="delete-record-confirm-btn"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!--
+  ── SCRIPT LOAD ORDER (IMPORTANT) ──
+  1. app.js  FIRST  — provides Auth, Api, Toast, openModal, closeModal,
+                      formatDate, formatCurrency, debounce, requireAuth,
+                      Permissions, ROLES
+  2. records.js SECOND — uses everything from app.js
+-->
+    <script src="app.js"></script>
+    <script src="records.js"></script>
+  </body>
+</html>

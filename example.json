@@ -1,0 +1,324 @@
+{
+  "baseUrl": "http://localhost:3001",
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/",
+      "auth": false,
+      "request": null,
+      "response": {
+        "sucess": true,
+        "message": "FinancialTrackProject API is running",
+        "data": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/",
+      "auth": true,
+      "request": {
+        "username": "john",
+        "email": "john@example.com",
+        "password": "secret123",
+        "role": "VIEWER"
+      },
+      "response": {
+        "sucess": true,
+        "message": "User created successfully",
+        "data": {
+          "userId": 1
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/",
+      "auth": true,
+      "request": null,
+      "response": {
+        "sucess": true,
+        "message": "User profile retrieval successfully",
+        "data": {
+          "data": [
+            {
+              "id": 1,
+              "username": "john",
+              "email": "john@example.com",
+              "role": "VIEWER",
+              "status": "active",
+              "created_at": "2026-04-06T08:30:00.000Z"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/users/:id",
+      "auth": true,
+      "request": null,
+      "response": {
+        "sucess": true,
+        "message": "User profile retrieved successfully",
+        "data": {
+          "user": {
+            "username": "john",
+            "email": "john@example.com",
+            "role": "VIEWER",
+            "status": "active",
+            "created_at": "2026-04-06T08:30:00.000Z"
+          }
+        }
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/users/:id",
+      "auth": true,
+      "request": {
+        "username": "johnny",
+        "email": "johnny@example.com",
+        "password": "newpass123",
+        "role": "ANALYST"
+      },
+      "response": {
+        "sucess": true,
+        "message": "User Updated successfully",
+        "data": {
+          "userId": 1
+        }
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/users/:id",
+      "auth": true,
+      "request": null,
+      "response": {
+        "sucess": true,
+        "message": "User successfullY DELETED",
+        "data": {
+          "result": {
+            "message": "User deleted successfully"
+          }
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/records",
+      "auth": true,
+      "request": {
+        "user_id": 1,
+        "amount": 5000,
+        "type_id": 1,
+        "category_id": 3,
+        "record_date": "2026-04-03",
+        "description": "Salary"
+      },
+      "response": {
+        "sucess": true,
+        "message": "Record added successfully",
+        "data": {
+          "records": {
+            "id": 10,
+            "user_id": 1,
+            "amount": "5000.00",
+            "type_id": 1,
+            "category_id": 3,
+            "record_date": "2026-04-03",
+            "description": "Salary"
+          }
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/records/get",
+      "auth": true,
+      "request": null,
+      "response": {
+        "sucess": true,
+        "message": "Records retrieved successfully",
+        "data": {
+          "records": [
+            {
+              "id": 10,
+              "user_id": 1,
+              "amount": "5000.00",
+              "type_id": 1,
+              "category_id": 3,
+              "record_date": "2026-04-03",
+              "description": "Salary"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/records/get/:id",
+      "auth": true,
+      "request": null,
+      "response": {
+        "sucess": true,
+        "message": "Record retrieved successfully",
+        "data": {
+          "records": {
+            "id": 10,
+            "user_id": 1,
+            "amount": "5000.00",
+            "type_id": 1,
+            "category_id": 3,
+            "record_date": "2026-04-03",
+            "description": "Salary"
+          }
+        }
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/records/update/:id",
+      "auth": true,
+      "request": {
+        "amount": 4500,
+        "type_id": 2,
+        "category_id": 1,
+        "record_date": "2026-04-10",
+        "description": "Groceries"
+      },
+      "response": {
+        "sucess": true,
+        "message": "Record updated successfully",
+        "data": {
+          "records": {
+            "id": 10,
+            "user_id": 1,
+            "amount": "4500.00",
+            "type_id": 2,
+            "category_id": 1,
+            "record_date": "2026-04-10",
+            "description": "Groceries"
+          }
+        }
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/records/delete/:id",
+      "auth": true,
+      "request": null,
+      "response": {
+        "sucess": true,
+        "message": "Record deleted Successfully",
+        "data": {
+          "records": {
+            "id": 10,
+            "user_id": 1,
+            "amount": "4500.00",
+            "type_id": 2,
+            "category_id": 1,
+            "record_date": "2026-04-10",
+            "description": "Groceries"
+          }
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/summary/overview",
+      "auth": true,
+      "request": null,
+      "response": {
+        "sucess": true,
+        "message": "Overview summary retrieved successfully",
+        "data": {
+          "summary": {
+            "total_income": "5000.00",
+            "total_expense": "1200.00",
+            "total_netbalance": "3800.00"
+          }
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/summary/Category",
+      "auth": true,
+      "request": null,
+      "response": {
+        "sucess": true,
+        "message": "Category summary retrieved successfully",
+        "data": {
+          "summary": [
+            {
+              "category": "Food",
+              "total_income": "0.00",
+              "total_expense": "1200.00"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/summary/trends",
+      "auth": true,
+      "request": null,
+      "response": {
+        "sucess": true,
+        "message": "Trend analysis retrieved successfully",
+        "data": {
+          "trend": [
+            {
+              "month": "2026-04-01",
+              "total_income": "5000.00",
+              "total_expense": "1200.00"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/register",
+      "auth": false,
+      "enabled": true,
+      "request": {
+        "username": "john",
+        "email": "john@example.com",
+        "password": "secret123",
+        "role": "VIEWER"
+      },
+      "response": {
+        "sucess": true,
+        "message": "User registration successful",
+        "data": {
+          "userId": 1
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "auth": false,
+      "enabled": true,
+      "request": {
+        "email": "john@example.com",
+        "password": "secret123"
+      },
+      "response": {
+        "sucess": true,
+        "message": "Login successful",
+        "data": {
+          "token": "JWT_TOKEN_HERE",
+          "user": {
+            "id": 1,
+            "username": "john",
+            "role": "VIEWER"
+          }
+        }
+      }
+    }
+  ]
+}
