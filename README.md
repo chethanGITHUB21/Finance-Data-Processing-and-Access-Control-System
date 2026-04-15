@@ -129,7 +129,7 @@ Records are soft-deleted (flagged with `is_deleted` and timestamped in `deleted_
 
 <img width="1125" height="1068" alt="secondpageANA" src="https://github.com/user-attachments/assets/c19d14eb-0da9-423d-a6a8-dd123b308710" />
 
-<img width="1125" height="1470" alt="thirdpageADMIN" src="https://github.com/user-attachments/assets/b6dc92ac-b163-4228-8955-2d4ee5a3e0e3" />
+<img width="1125" height="1419" alt="thirdpageANA" src="https://github.com/user-attachments/assets/f8113bf3-0631-4257-80c5-d55acf1b849c" />
 
 3. VIEWER:
 
