@@ -115,7 +115,7 @@ Records are soft-deleted (flagged with `is_deleted` and timestamped in `deleted_
    
 <img width="1460" height="1228" alt="frontpageADMIN" src="https://github.com/user-attachments/assets/5cd7667e-55fb-4a98-aaa9-3053137f93be" />
 
-<img width="1125" height="1068" alt="secondpageANA" src="https://github.com/user-attachments/assets/a43b65e1-0d28-42e9-a5fe-e9aca72cb076" />
+<img width="1385" height="1068" alt="secondpageADMIN" src="https://github.com/user-attachments/assets/616a27c6-a187-45cb-b7cd-c6dd015fa90b" />
 
 <img width="1125" height="1068" alt="userformADMIN" src="https://github.com/user-attachments/assets/8495b75c-06dc-4526-8b49-5bf5b63081eb" />
 
