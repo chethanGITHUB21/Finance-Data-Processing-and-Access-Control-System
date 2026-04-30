@@ -15,7 +15,7 @@ router.post(
   registrationValidationRules,
   validate,
   authController.register,
-);
+); 
 
 // POST - Login for user
 router.post(
